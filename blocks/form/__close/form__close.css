@@ -1,0 +1,16 @@
+.form__close{
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+
+    background: none;
+    border: none;
+
+    position: absolute;
+    display: flex;
+    right: 438px;
+    top: -40px;
+
+
+    fill: #FFF;
+}

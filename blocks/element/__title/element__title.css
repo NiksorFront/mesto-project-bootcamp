@@ -1,0 +1,18 @@
+.element__title{
+    /*Чтобы не отображать невлезший текст*/
+    max-height: 80%;
+    overflow: hidden;
+
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+
+    margin: auto 0;
+    margin-left: 21px;
+
+    grid-area: title;
+    
+}
