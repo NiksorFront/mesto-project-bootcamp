@@ -14,3 +14,7 @@
     grid-area: like;
     
 }
+
+.element__like:hover{
+    opacity: 0.5;
+}

@@ -3,14 +3,33 @@
     height: 32px;
     flex-shrink: 0;
 
+    margin: 0;
     background: none;
     border: none;
 
     position: absolute;
     display: flex;
-    right: 438px;
+    right: -40px;
     top: -40px;
 
-
+    background-image: url("../../../image/Close.svg");
+    background-position: center;
+    background-size: contain;
     fill: #FFF;
+    
+}
+
+@media (max-width: 600px){
+    .form__close{
+        width: 20px;
+        height: 20px;
+
+        right: 0px;
+        top: -36px;
+    }
+}
+
+.form__close:hover{
+    opacity: 0.6;
+    cursor: pointer;
 }

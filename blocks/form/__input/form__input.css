@@ -1,11 +1,30 @@
 .form__input{
-    margin: 0;
+    width: auto;
+    height: 27px;
+    margin: 33px 36px 0;
     padding: 0;
 
+    border: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    
     color: #000;
     font-family: Inter;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    
+}
+
+.form__input:first-of-type{
+    margin-top: 44px;
+}
+
+@media (max-width: 600px){
+    .form__input{
+    margin: 33px 22px 0;
+    }
+    .form__input:first-of-type{
+        margin-top: 70px;
+    }
 }

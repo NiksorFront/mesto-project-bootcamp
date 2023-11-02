@@ -19,3 +19,7 @@
         margin-top: 36px;
     }
 }
+
+.button-add:hover{
+    opacity: 0.6;
+}
