@@ -16,55 +16,59 @@
         <section class="profile">
             <img src="image/niksor.png" class="avatar" alt="Николай Сорокин">
             <div class="profile__info">
-                <h2 class="profile__name">Николай Сорокин</h2>
+                <h1 class="profile__name">Николай Сорокин</h1>
                 <p class="profile__subtitle">Исследователь Москвы (2023 год)</p>
-                <button class="profile__edit-button"></button>
+                <button type="button" class="profile__edit-button"></button>
             </div>
-            <button class="button-add">
+            <button type="button" class="button-add">
                 <img src="./image/plus.svg" alt="плюс">
             </button>
         </section>
-        <ul class="elements">
-            <li class="element">
+        <section class="elements">
+            <article class="element">
                 <img src="./image/image_1.png" class="element__img" alt="Пресненский">
                 <h2 class="element__title">Пресненский</h2>
-                <button class="element__like"></button>
-            </li>
-            <li class="element">
-                <img src="./image/image_2.png" class="element__img">
+                <button type="submit" class="element__like"></button>
+            </article>
+            <article class="element">
+                <img src="./image/image_2.png" class="element__img" alt="Пресненский">
                 <h2 class="element__title">Пресненский</h2>
-                <button class="element__like"></button>
-            </li>
-            <li class="element">
+                <button type="submit" class="element__like"></button>
+            </article>
+            <article class="element">
                 <img src="./image/image_3.png" class="element__img" alt="Орехово-Борисово северное">
                 <h2 class="element__title">Орехово-Борисово северное</h2>
-                <button class="element__like"></button>
-            </li>
-            <li class="element">
+                <button type="submit" class="element__like"></button>
+            </article>
+            <article class="element">
                 <img src="./image/image_4.png" class="element__img" alt="Алексеевский">
                 <h2 class="element__title">Алексеевский</h2>
-                <button class="element__like"></button>
-            </li>
-            <li class="element">
+                <button type="submit" class="element__like"></button>
+            </article>
+            <article class="element">
                 <img src="./image/image_5.png" class="element__img" alt="Хорошёвский">
                 <h2 class="element__title">Хорошёвский</h2>
-                <button class="element__like"></button>
-            </li>
-            <li class="element">
+                <button type="submit" class="element__like"></button>
+            </article>
+            <article class="element">
                 <img src="./image/image_6.png" class="element__img" alt="Таганский">
                 <h2 class="element__title">Таганский</h2>
-                <button class="element__like"></button>
-            </li>
-        </ul>
-
-        <section class="form">
-            <span class="form__title">Редактировать профиль</span>
-            <input type="text" id="name" class="form__input" placeholder="Имя Фамилия">
-            <input type="text" id="type_of_activity" class="form__input" placeholder="Род дейтельности ">
-            <button class="form__button-submit">Сохранить</button>
-            <button class="form__close"> </button>
+                <button type="submit" class="element__like"></button>
+            </article>
         </section>
-        <div class="form__background"></div>
+
+        <!--Сделать popap-->
+        <section class="popup">
+            <article class="form">
+                <h3 class="form__title">Редактировать профиль</h3>
+                <form class="form__form">
+                    <input type="text" id="name" class="form__input" placeholder="Имя Фамилия">
+                    <input type="text" id="type_of_activity" class="form__input" placeholder="Род дейтельности ">
+                    <button type="submit" class="form__button-submit">Сохранить</button>
+                </form>
+                <button type="button" class="form__close"> </button>
+            </article>
+        </section>
         
     </main>
     <footer class="footer">

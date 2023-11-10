@@ -18,24 +18,17 @@ ButtonSave.addEventListener('click', save);
 
 /*Функционал открытия и закрытия меню*/
 const ButtonEdit = document.querySelector(".profile__edit-button");
-const ButtonClose = document.querySelector(".form__close");
-
-const WindowEdit = document.querySelector(".form");
-const Background = document.querySelector(".form__background");
+const ButtonPopupClose = document.querySelector(".form__close");
+const Popup = document.querySelector(".popup");
 function close_editProfile(){
-    WindowEdit.setAttribute('style', 'display: none');
-    Background.setAttribute('style', 'display: none');
+    Popup.classList.remove('popup_opened');
 }
 function open_editProfile(){
-    Name_Input.insertAdjacentHTML('beforeend', '<strong>inserted text</strong>');
-    WindowEdit.removeAttribute('style');
-    Background.removeAttribute('style');
+    Popup.classList.add("popup_opened");
 }
 
-/*По умолчанию панель редактирование отображается сразу, но нам этого не надо*/
-close_editProfile(); /*Поэтому скрываем её*/
 ButtonEdit.addEventListener('click', open_editProfile); /*Открываем панель редактирование по клику*/
-ButtonClose.addEventListener('click', close_editProfile);/*И закрывем по клику*/
+ButtonPopupClose.addEventListener('click', close_editProfile);/*И закрывем по клику*/
 
 
 /*Функционал лайка*/

@@ -1,6 +1,6 @@
 .profile__name{
     color: #FFF;
-    font-family: Inter;
+    font-family: Inter, Verdana, Tahoma, Arial, sans-serif;
     font-size: 42px;
     font-style: normal;
     font-weight: 500;
@@ -9,6 +9,11 @@
     margin: auto 0;
     text-align: center;
     padding: 0;
+
+    /*Чтобы не отображать невлезший текст*/
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 
