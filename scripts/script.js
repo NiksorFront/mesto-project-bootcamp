@@ -31,6 +31,13 @@ ButtonEdit.addEventListener('click', open_editProfile); /*Открываем п�
 ButtonPopupClose.addEventListener('click', close_editProfile);/*И закрывем по клику*/
 
 
+/*Тут будет функционал добавления карточки*/
+const Cards = document.querySelector(".elements");
+
+/*Удаление карточки по клику*/
+const Trash = document.querySelectorAll(".element__delete");
+Trash.forEach((elem) => elem.addEventListener('click', () => elem.parentElement.remove()));
+
 /*Функционал лайка*/
 const Likes = document.querySelectorAll(".element__like");
 
