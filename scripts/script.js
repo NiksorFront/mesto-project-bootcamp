@@ -1,4 +1,4 @@
-const initialCards = [
+let initialCards = [
 {
     name: 'Пресненский',
     link: './image/image_1.png'
@@ -81,9 +81,10 @@ const ButtonCreate = document.querySelector("#create-card").querySelector(".form
 ButtonCreate.addEventListener('click', (event) => {
     event.preventDefault();
     initialCards.unshift({name: PlaceInput.value, link: LinkInput.value})
-    Card_add(0);
-    like();    //Рабочий костыль))
-    del_but()  //И ещё один не помешает
+    Card_add(0, 'afterbegin');
+    like();     //Рабочий костыль))
+    del_but()   //И ещё один не помешает
+    opencard(); //Ну и это добивной костыльчек🤘
     document.querySelector("#create-card").classList.remove('popup_opened'); //Закрываем окно созадния
 });
 
@@ -95,21 +96,22 @@ const sampleCard  = document.querySelector("#card-template").content.querySelect
 
 
 //Функция добавления карточки
-function Card_add(index){
+function Card_add(index, place='beforeend'){
     const Card = sampleCard.cloneNode(true);
     Card.querySelector(".element__title").textContent = initialCards[index].name;
     Card.querySelector(".element__img").alt = initialCards[index].name;
     Card.querySelector(".element__img").src = initialCards[index].link;
-    Cards.append(Card);
+    Cards.insertAdjacentElement(place,Card);
 }
-
 
 initialCards.forEach((obj, index) => Card_add(index));  //Здесь добавляем те карточки, что в начальном списке
 
 function del_but(){ //костыль))
     //Удаление по клику
     const Trash = document.querySelectorAll(".element__delete");
-    Trash.forEach((elem) => elem.addEventListener('click', () => elem.parentElement.remove()));
+    Trash.forEach((elem, index) => elem.addEventListener('click', () => {
+        elem.parentElement.remove()
+    }));
 }
 del_but();
 
@@ -128,5 +130,29 @@ function like(){ //Рабочий костыль))
 };
 
 like();
+
+
+/*Функционал открытия картинки*/
+function opencard(){ //Костылище
+    const CardImg = document.querySelectorAll("#card-image");
+    CardImg.forEach((element, index) => element.addEventListener('click', () => {
+        const formImg = document.querySelector('#big-img');
+        const Img = formImg.querySelector('.form__img');
+        const formImgTitle = formImg.querySelector('.form_img__title');
+    
+        Img.src = element.firstElementChild.getAttribute('src');
+        Img.alt = element.firstElementChild.getAttribute('alt');
+        formImgTitle.textContent = element.firstElementChild.getAttribute('alt');
+
+        console.log(element.parentElement);
+        formImg.classList.add('popup_opened');
+    }
+    ));
+}
+opencard();
+
+/*Функционал закрытия картинки*/
+const ButtonPopupClose_img = document.querySelector("#big-img").querySelector(".form__close");
+ButtonPopupClose_img.addEventListener('click', () => document.querySelector("#big-img").classList.remove('popup_opened'));//Закрывем по клику
 
 

@@ -24,9 +24,18 @@
                 <img src="./image/plus.svg" alt="плюс">
             </button>
         </section>
+
         <section class="elements">
         </section>
         
+        <section id="big-img" class="popup">
+            <article class="form form_img">
+                <img src="" class="form__img" alt="">
+                <h4 class="form_img__title"></h4>
+                <button type="button" class="form__close"></button>
+            </article>
+        </section>
+
         <section id="edit-card" class="popup">
             <article class="form">
                 <h3 class="form__title">Редактировать профиль</h3>
@@ -56,7 +65,9 @@
     </footer>
     <template id="card-template">
         <article class="element">
-            <img src="" class="element__img" alt="">
+            <a id="card-image" class="button"> 
+                <img src="" class="element__img" alt=""> 
+            </a>
             <button type="submit" class="element__delete"></button>
             <h2 class="element__title"></h2>
             <button type="submit" class="element__like"></button>
