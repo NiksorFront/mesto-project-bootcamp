@@ -1,3 +1,30 @@
+const initialCards = [
+{
+    name: 'Пресненский',
+    link: './image/image_1.png'
+},
+{
+    name: 'Пресненский',
+    link: './image/image_2.png'
+},
+{
+    name: 'Орехово-Борисово северное',
+    link: './image/image_3.png',
+},
+{
+    name: 'Алексеевский',
+    link: './image/image_4.png',
+},
+{
+    name: 'Хорошёвский',
+    link: './image/image_5.png',
+},
+{
+    name: 'Таганский',
+    link: './image/image_6.png',
+},
+];
+
 /*Функционал имени и рода дейтельности пользователя*/
 const Name = document.querySelector(".profile__name");
 const Name_Input = document.getElementById("name");
@@ -31,8 +58,19 @@ ButtonEdit.addEventListener('click', open_editProfile); /*Открываем п�
 ButtonPopupClose.addEventListener('click', close_editProfile);/*И закрывем по клику*/
 
 
-/*Тут будет функционал добавления карточки*/
+/*Функционал добавления карточки*/
 const Cards = document.querySelector(".elements");
+const sampleCard  = document.querySelector("#card-template").content.querySelector('.element');
+
+
+initialCards.forEach((obj, index) => {
+    const Card = sampleCard.cloneNode(true);
+    Card.querySelector(".element__title").textContent = initialCards[index].name;
+    Card.querySelector(".element__img").alt = initialCards[index].name;
+    Card.querySelector(".element__img").src = initialCards[index].link;
+    Cards.append(Card);
+});
+
 
 /*Удаление карточки по клику*/
 const Trash = document.querySelectorAll(".element__delete");
