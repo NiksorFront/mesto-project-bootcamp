@@ -40,6 +40,7 @@ function saveNew_Name_Job(event){
 
     Name.textContent = NameInput.value;
     Job.textContent = JobInput.value;
+    document.querySelector("#edit-card").classList.remove('popup_opened');//Закрываем окно
 }
 
 ButtonSave.addEventListener('click', saveNew_Name_Job);
