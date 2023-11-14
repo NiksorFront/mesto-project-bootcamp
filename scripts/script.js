@@ -34,7 +34,7 @@ const Job = document.querySelector(".profile__subtitle");
 const JobInput = document.getElementById("type_of_activity");
 JobInput.value = Job.textContent;
 
-const ButtonSave = document.querySelector(".form__button-submit");
+const ButtonSave = document.querySelector("#edit-card").querySelector(".form__button-submit");
 function saveNew_Name_Job(event){
     event.preventDefault();
 
@@ -54,49 +54,79 @@ function handleFormSubmit(evt) {
 ButtonSave.addEventListener('submit', handleFormSubmit); 
 
 
-/*Функционал открытия и закрытия меню*/
+
+/*Функционал открытия-закрытия окна редактирования*/
 const ButtonEdit = document.querySelector(".profile__edit-button");
-const ButtonPopupClose = document.querySelector(".form__close");
-const Popup = document.querySelector(".popup");
-function close_editProfile(){
-    Popup.classList.remove('popup_opened');
-}
-function open_editProfile(){
-    Popup.classList.add("popup_opened");
-}
+const ButtonPopupClose_edit = document.querySelector("#edit-card").querySelector(".form__close");
 
-ButtonEdit.addEventListener('click', open_editProfile); /*Открываем панель редактирование по клику*/
-ButtonPopupClose.addEventListener('click', close_editProfile);/*И закрывем по клику*/
+ButtonEdit.addEventListener('click', () => document.querySelector("#edit-card").classList.add("popup_opened"));              //Открываем панель редактирование по клику
+ButtonPopupClose_edit.addEventListener('click', () => document.querySelector("#edit-card").classList.remove('popup_opened'));//И закрывем по клику
 
 
-/*Функционал добавления карточки*/
+
+/*Функционал открытия-закрытия окна создания карточек*/
+const ButtonAdd = document.querySelector(".button-add");
+const ButtonPopupClose_add = document.querySelector("#create-card").querySelector(".form__close");
+
+ButtonAdd.addEventListener('click', () => document.querySelector("#create-card").classList.add("popup_opened"));              //Открываем панель созданаия по клику
+ButtonPopupClose_add.addEventListener('click', () => document.querySelector("#create-card").classList.remove('popup_opened'));//И закрывем по клику
+
+
+
+/*Функционал Создания карточки*/
+const PlaceInput = document.getElementById('name_place');
+const LinkInput = document.getElementById('link_photo');
+const ButtonCreate = document.querySelector("#create-card").querySelector(".form__button-submit");
+
+ButtonCreate.addEventListener('click', (event) => {
+    event.preventDefault();
+    initialCards.unshift({name: PlaceInput.value, link: LinkInput.value})
+    Card_add(0);
+    like();    //Рабочий костыль))
+    del_but()  //И ещё один не помешает
+    document.querySelector("#create-card").classList.remove('popup_opened'); //Закрываем окно созадния
+});
+
+
+
+/*Функционал добавления-удаления карточек*/
 const Cards = document.querySelector(".elements");
 const sampleCard  = document.querySelector("#card-template").content.querySelector('.element');
 
 
-initialCards.forEach((obj, index) => {
+//Функция добавления карточки
+function Card_add(index){
     const Card = sampleCard.cloneNode(true);
     Card.querySelector(".element__title").textContent = initialCards[index].name;
     Card.querySelector(".element__img").alt = initialCards[index].name;
     Card.querySelector(".element__img").src = initialCards[index].link;
     Cards.append(Card);
-});
+}
 
 
-/*Удаление карточки по клику*/
-const Trash = document.querySelectorAll(".element__delete");
-Trash.forEach((elem) => elem.addEventListener('click', () => elem.parentElement.remove()));
+initialCards.forEach((obj, index) => Card_add(index));  //Здесь добавляем те карточки, что в начальном списке
+
+function del_but(){ //костыль))
+    //Удаление по клику
+    const Trash = document.querySelectorAll(".element__delete");
+    Trash.forEach((elem) => elem.addEventListener('click', () => elem.parentElement.remove()));
+}
+del_but();
 
 /*Функционал лайка*/
-const Likes = document.querySelectorAll(".element__like");
+function like(){ //Рабочий костыль))
+    const Likes = document.querySelectorAll(".element__like");
 
-Likes.forEach((element) => element.addEventListener('click', () => {
-    console.log(element.classList.contains("element__like_set"));
-    if (element.classList.contains("element__like_set")){
-        element.classList.remove("element__like_set");
-    }
-    else{
-        element.classList.add("element__like_set");
-    }
-}));
+    Likes.forEach((element) => element.addEventListener('click', () => {
+        if (element.classList.contains("element__like_set")){
+            element.classList.remove("element__like_set");
+        }
+        else{
+            element.classList.add("element__like_set");
+        }
+    }));
+};
+
+like();
+
 

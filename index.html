@@ -26,9 +26,8 @@
         </section>
         <section class="elements">
         </section>
-
-        <!--Сделать popap-->
-        <section class="popup">
+        
+        <section id="edit-card" class="popup">
             <article class="form">
                 <h3 class="form__title">Редактировать профиль</h3>
                 <form class="form__form">
@@ -40,6 +39,17 @@
             </article>
         </section>
         
+        <section id="create-card" class="popup">
+            <article class="form">
+                <h3 class="form__title">Новое место</h3>
+                <form class="form__form">
+                    <input type="text" id="name_place" class="form__input" placeholder="Название">
+                    <input type="text" id="link_photo" class="form__input" placeholder="Ссылка на картинку">
+                    <button type="submit" class="form__button-submit">Создать</button>
+                </form>
+                <button type="button" class="form__close"> </button>
+            </article>
+        </section>
     </main>
     <footer class="footer">
         <p>© 2020 Mesto Russia</p>
