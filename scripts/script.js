@@ -27,20 +27,31 @@ const initialCards = [
 
 /*Функционал имени и рода дейтельности пользователя*/
 const Name = document.querySelector(".profile__name");
-const Name_Input = document.getElementById("name");
-Name_Input.value = Name.textContent;
+const NameInput = document.getElementById("name");
+NameInput.value = Name.textContent;
 
-const TypeActivity = document.querySelector(".profile__subtitle");
-const TypeActivity_Input = document.getElementById("type_of_activity");
-TypeActivity_Input.value = TypeActivity.textContent;
+const Job = document.querySelector(".profile__subtitle");
+const JobInput = document.getElementById("type_of_activity");
+JobInput.value = Job.textContent;
 
 const ButtonSave = document.querySelector(".form__button-submit");
-function save(){
-    Name.textContent = Name_Input.value;
-    TypeActivity.textContent = TypeActivity_Input.value;
+function saveNew_Name_Job(event){
+    event.preventDefault();
+
+    Name.textContent = NameInput.value;
+    Job.textContent = JobInput.value;
 }
 
-ButtonSave.addEventListener('click', save);
+ButtonSave.addEventListener('click', saveNew_Name_Job);
+
+/*Тут будет функционал отправки новых данных на сервачок*/
+function handleFormSubmit(evt) {
+    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+
+    //Функционал сохранения и присвоения реализован в saveNew_Name_Job()
+}
+
+ButtonSave.addEventListener('submit', handleFormSubmit); 
 
 
 /*Функционал открытия и закрытия меню*/
