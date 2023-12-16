@@ -51,7 +51,7 @@ function handleFormSubmit(evt) {
     name.textContent = nameInput.value;
     job.textContent = jobInput.value;
     closePopup(profilePopup)//Закрываем окно
-    //Функционал сохранения и присвоения реализован в saveNew_Name_Job()
+
 }
 
 formSaveNameJob.addEventListener('submit', handleFormSubmit); 
@@ -80,7 +80,7 @@ const buttonAdd = document.querySelector(".button-add");
 const buttonPopupClose_add = cardPopup.querySelector(".popup__close");
 
 buttonAdd.addEventListener('click', () => openPopup(cardPopup));              //Открываем панель созданаия по клику
-buttonPopupClose_add.addEventListener('click', () => closePopup(cardPopup));//И закрывем по клику
+buttonPopupClose_add.addEventListener('click', () => closePopup(cardPopup));  //И закрывем по клику
 
 
 //Функция создания каротчки
@@ -111,17 +111,46 @@ function createCard(cardInfo){
 }
 
 /*Функционал Создания карточки*/
-const placeInput = document.getElementById('name_place');
+const placeNameInput = document.getElementById('name_place');
 const linkInput = document.getElementById('link_photo');
 const formCreate = document.forms.form_create;
 
 formCreate.addEventListener('submit', (event) => {
     event.preventDefault();
-    cards.insertAdjacentElement("afterBegin", createCard({name: placeInput.value, link: linkInput.value}))
+    cards.insertAdjacentElement("afterBegin", createCard({name: placeNameInput.value, link: linkInput.value}))
     closePopup(cardPopup); //Закрываем окно созадния
 });
 
+//Функция валидурющая формы любых размерностей
+function FormValid(form, InputFields = []){
+    Valids = []     //Здесь все значения валидности полей
+    InputFields.forEach((inp) => {Valids.push(inp.validity.valid)}) //Узнаём нынешнее состояние полей(валидны, нет ли)
+    const SubmitButton = form.querySelector(".form__button-submit");    
+    function SubmitButtonValid(){
+        if(Valids.every(value => value === true)){                      //Если все поля валидны -
+            SubmitButton.classList.remove("form__button-submit_block"); //Делаем кнопку
+            SubmitButton.disabled = false;                              //активной
+        }
+        else{                                                           //Если не валидны -
+            SubmitButton.classList.add("form__button-submit_block");    //Делаем кнопку 
+            SubmitButton.disabled = true;                               //не активной
+        };
+    }
 
+    InputFields.forEach((inputPlace, index) => {                        //Добавляем каждому полю слушатель проверяющией его на валидность
+        inputPlace.addEventListener('input', (event)=>{
+            Valids[index] = event.target.validity.valid;  //Записваем валидно ли поле сейчас
+            if(Valids[index]){ 
+                  inputPlace.nextElementSibling.textContent = "";}
+            else{ inputPlace.nextElementSibling.textContent = event.target.validationMessage;}
+            SubmitButtonValid();      
+        })
+    })
+}
+
+//В списочек добаляем все поля, участвующие в валидации
+FormValid(formCreate, [placeNameInput, linkInput]);
+FormValid(formSaveNameJob, [nameInput, jobInput]);
 
 /*Функционал добавления-удаления карточек*/
 const cards = document.querySelector(".elements");
@@ -131,5 +160,4 @@ initialCards.forEach((obj) => cards.insertAdjacentElement("beforeEnd", createCar
 /*Функционал закрытия картинки*/
 const buttonPopupClose_img = imagePopup.querySelector(".popup__close");
 buttonPopupClose_img.addEventListener('click', () => closePopup(imagePopup));//Закрывем по клику
-
 
