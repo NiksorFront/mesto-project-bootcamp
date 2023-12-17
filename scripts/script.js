@@ -72,6 +72,11 @@ jobInput.value = job.textContent;                             //дейтельн
 
 buttonEdit.addEventListener('click', () => openPopup(profilePopup));             //Открываем панель редактирование по клику
 buttonPopupClose_edit.addEventListener('click', () => closePopup(profilePopup)); //И закрывем по клику
+profilePopup.querySelector(".popup__container").addEventListener('click', (event) => {event._isClickWithInModal = true});
+profilePopup.addEventListener('click', (event) => {                              //А ещё по клику на тёмный фон
+    if (event._isClickWithInModal) return;
+    closePopup(profilePopup);
+});
 
 
 
@@ -80,7 +85,13 @@ const buttonAdd = document.querySelector(".button-add");
 const buttonPopupClose_add = cardPopup.querySelector(".popup__close");
 
 buttonAdd.addEventListener('click', () => openPopup(cardPopup));              //Открываем панель созданаия по клику
-buttonPopupClose_add.addEventListener('click', () => closePopup(cardPopup));  //И закрывем по клику
+buttonPopupClose_add.addEventListener('click', () => closePopup(cardPopup));  //И закрывем по клику на крестик
+cardPopup.querySelector(".popup__container").addEventListener('click', (event) => {event._isClickWithInModal = true});
+cardPopup.addEventListener('click', (event) => {                              //А ещё по клику на тёмный фон
+    if (event._isClickWithInModal) return;
+    closePopup(cardPopup);
+});
+
 
 
 //Функция создания каротчки
@@ -121,11 +132,12 @@ formCreate.addEventListener('submit', (event) => {
     closePopup(cardPopup); //Закрываем окно созадния
 });
 
-//Функция валидурющая формы любых размерностей
+/*Функция валидурющая формы любых размерностей*/
 function FormValid(form, InputFields = []){
     Valids = []     //Здесь все значения валидности полей
-    InputFields.forEach((inp) => {Valids.push(inp.validity.valid)}) //Узнаём нынешнее состояние полей(валидны, нет ли)
+    InputFields.forEach((inp) => {Valids.push(inp.validity.valid)})    //Узнаём и добвляем в Valids нынешнее состояние полей(валидны, нет ли)
     const SubmitButton = form.querySelector(".form__button-submit");    
+    //Функция активрующая или деактивирующая функцию валидации
     function SubmitButtonValid(){
         if(Valids.every(value => value === true)){                      //Если все поля валидны -
             SubmitButton.classList.remove("form__button-submit_block"); //Делаем кнопку
@@ -136,8 +148,8 @@ function FormValid(form, InputFields = []){
             SubmitButton.disabled = true;                               //не активной
         };
     }
-
-    InputFields.forEach((inputPlace, index) => {                        //Добавляем каждому полю слушатель проверяющией его на валидность
+    //Добавляем каждому полю слушатель проверяющией его на валидность
+    InputFields.forEach((inputPlace, index) => {                        
         inputPlace.addEventListener('input', (event)=>{
             Valids[index] = event.target.validity.valid;  //Записваем валидно ли поле сейчас
             if(Valids[index]){ 
@@ -159,5 +171,10 @@ initialCards.forEach((obj) => cards.insertAdjacentElement("beforeEnd", createCar
 
 /*Функционал закрытия картинки*/
 const buttonPopupClose_img = imagePopup.querySelector(".popup__close");
-buttonPopupClose_img.addEventListener('click', () => closePopup(imagePopup));//Закрывем по клику
+buttonPopupClose_img.addEventListener('click', () => closePopup(imagePopup)); //Закрывем по клику на крестик 
+imagePopup.querySelector(".popup__container").addEventListener('click', (event) => {event._isClickWithInModal = true});
+imagePopup.addEventListener('click', (event) => {                             //и по клмку на тёмный фон
+    if (event._isClickWithInModal) return;
+    closePopup(imagePopup);
+});
 
