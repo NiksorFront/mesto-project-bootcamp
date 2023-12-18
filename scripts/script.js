@@ -39,6 +39,23 @@ function closePopup(popup){
     popup.classList.remove('popup_opened');//Закрываем окно
 }
 
+//Функция закрытия попапа по нажатия на тёмный фон или escape
+function closePopupByClickOnBackgroundAndButton(popup){
+    //Закрытие по клику на тёмный фон
+    popup.querySelector(".popup__container").addEventListener('click', (event) => {event._isClickWithInModal = true});
+    popup.addEventListener('click', (event) => {                            
+        if (event._isClickWithInModal) return;
+        popup.classList.remove('popup_opened');
+    });
+
+    //Закрытие по клику на Escape
+    window.addEventListener('keydown', (event) => {
+        if (event.key === "Escape") {
+            popup.classList.remove('popup_opened');
+        }
+    })
+}
+
 
 /*Функционал имени и рода дейтельности пользователя*/
 const formSaveNameJob = document.forms.name_jod
@@ -71,12 +88,8 @@ const jobInput = document.getElementById("type_of_activity"); //род
 jobInput.value = job.textContent;                             //дейтельности
 
 buttonEdit.addEventListener('click', () => openPopup(profilePopup));             //Открываем панель редактирование по клику
-buttonPopupClose_edit.addEventListener('click', () => closePopup(profilePopup)); //И закрывем по клику
-profilePopup.querySelector(".popup__container").addEventListener('click', (event) => {event._isClickWithInModal = true});
-profilePopup.addEventListener('click', (event) => {                              //А ещё по клику на тёмный фон
-    if (event._isClickWithInModal) return;
-    closePopup(profilePopup);
-});
+buttonPopupClose_edit.addEventListener('click', () => closePopup(profilePopup)); //И закрывем по клику на крестик
+closePopupByClickOnBackgroundAndButton(profilePopup);                            //и по клмку на тёмный фон и Escape
 
 
 
@@ -86,11 +99,7 @@ const buttonPopupClose_add = cardPopup.querySelector(".popup__close");
 
 buttonAdd.addEventListener('click', () => openPopup(cardPopup));              //Открываем панель созданаия по клику
 buttonPopupClose_add.addEventListener('click', () => closePopup(cardPopup));  //И закрывем по клику на крестик
-cardPopup.querySelector(".popup__container").addEventListener('click', (event) => {event._isClickWithInModal = true});
-cardPopup.addEventListener('click', (event) => {                              //А ещё по клику на тёмный фон
-    if (event._isClickWithInModal) return;
-    closePopup(cardPopup);
-});
+closePopupByClickOnBackgroundAndButton(cardPopup);                            //и по клмку на тёмный фон и Escape
 
 
 
@@ -172,9 +181,5 @@ initialCards.forEach((obj) => cards.insertAdjacentElement("beforeEnd", createCar
 /*Функционал закрытия картинки*/
 const buttonPopupClose_img = imagePopup.querySelector(".popup__close");
 buttonPopupClose_img.addEventListener('click', () => closePopup(imagePopup)); //Закрывем по клику на крестик 
-imagePopup.querySelector(".popup__container").addEventListener('click', (event) => {event._isClickWithInModal = true});
-imagePopup.addEventListener('click', (event) => {                             //и по клмку на тёмный фон
-    if (event._isClickWithInModal) return;
-    closePopup(imagePopup);
-});
+closePopupByClickOnBackgroundAndButton(imagePopup);                           //и по клмку на тёмный фон и Escape
 
