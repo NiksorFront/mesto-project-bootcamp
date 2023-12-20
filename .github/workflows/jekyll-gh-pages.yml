@@ -22,18 +22,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build job
-  build-and-deploy:
-    name: Build and deploy website
+  deploy:
+    name: Deploy website
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Install dependencies
-        run: npm install
-      - name: Build website
-        run: npm run build
-      - name: Upload built files to GitHub Pages
-        uses: james-carr/github-pages-action@v2
+      - run: npm install
+      - run: npm run build
+      - uses: webflow/deploy-to-github-pages@v1
         with:
-          github_pages_path: '/dist'
-          force_overwrite: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          site_name: My Website
+          branch: master
+          path: dist
