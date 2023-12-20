@@ -35,5 +35,5 @@ jobs:
       - name: Upload built files to GitHub Pages
         uses: james-carr/github-pages-action@v2
         with:
-          github_pages_path: './dist/'
+          github_pages_path: '/dist'
           force_overwrite: true
