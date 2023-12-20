@@ -1,0 +1,15 @@
+.form__button-submit_block{
+    border-radius: 2px;
+    border: 1px solid #000;
+
+    background: none;
+    
+    color: rgba(0, 0, 0, 1);
+
+    opacity: 20%;
+}
+
+.form__button-submit_block:hover{
+    opacity: 20%;
+    cursor: none;
+}
