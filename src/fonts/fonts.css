@@ -1,0 +1,6 @@
+@font-face {
+	/*Inter-Regular.woff2 содержит в себе все возможные начртания шрифта "Inter".
+	  При его импорте мы автоматические получаем и italic, и bold и остальные все возможные конфигурации*/
+	src: url(./Inter-Regular.woff2);
+	font-family: "Inter"; 
+}
