@@ -1,5 +1,7 @@
 import {openPopup, closePopup, closePopupByClickOnBackgroundAndButton} from "./popup"
 import {enableValidation} from "./validate"
+import {big_img} from "./image"
+
 
 export const cards = document.querySelector(".elements"); //Тут храняться все карточки
 
@@ -7,30 +9,22 @@ export const cards = document.querySelector(".elements"); //Тут хранят�
 const sampleCard  = document.querySelector("#card-template").content.querySelector('.element');
 export function createCard(cardInfo){
     const card = sampleCard.cloneNode(true);
+    const image = card.querySelector(".element__img");
+    const like = card.querySelector(".element__like");
+
     card.querySelector(".element__title").textContent = cardInfo.name;
-    card.querySelector(".element__img").alt = cardInfo.name;
-    card.querySelector(".element__img").src = cardInfo.link;
+    image.alt = cardInfo.name;
+    image.src = cardInfo.link;
+
     /*Функционал лайка*/
-    card.querySelector(".element__like").addEventListener('click', () => card.querySelector(".element__like").classList.toggle("element__like_set"));
+    like.addEventListener('click', () => like.classList.toggle("element__like_set"));
+
     /*Функционал удаления карточки*/
+    //Можно создать отдельную перменную trash, но т.к. больше нам она не для чего не нужна, то лучше не выдлять память и единорзово её использовать так
     card.querySelector(".element__delete").addEventListener('click', () => card.remove());
+
     /*Функционал открытия большой картинки*/
-    card.querySelector("#card-image").addEventListener('click', () => {
-        //Хотя в иделе бы весь этот код перенести в image.js
-        const formImg = document.querySelector('#big-img');
-        const Img = formImg.querySelector('.form__img');
-        const formImgTitle = formImg.querySelector('.form_img__title');
-    
-        Img.src = card.querySelector(".element__img").getAttribute('src');
-        Img.alt = card.querySelector(".element__img").getAttribute('alt');
-        formImgTitle.textContent = card.querySelector(".element__img").getAttribute('alt');
-
-        const buttonPopupClose_img = formImg.querySelector(".popup__close");
-        buttonPopupClose_img.addEventListener('click', () => closePopup(formImg)); //Закрывем по клику на крестик 
-        closePopupByClickOnBackgroundAndButton(formImg);                           //и по клмку на тёмный фон и Escape
-
-        openPopup(formImg);
-    })
+    card.querySelector("#card-image").addEventListener('click', () => {big_img(image, cardInfo.name)})
 
     return card
 }
@@ -43,7 +37,7 @@ const buttonPopupClose_add = cardPopup.querySelector(".popup__close");
 
 buttonAdd.addEventListener('click', () => openPopup(cardPopup));              //Открываем панель созданаия по клику
 buttonPopupClose_add.addEventListener('click', () => closePopup(cardPopup));  //И закрывем по клику на крестик
-closePopupByClickOnBackgroundAndButton(cardPopup);                            //и по клмку на тёмный фон и Escape
+closePopupByClickOnBackgroundAndButton(cardPopup);                            //и по клику на тёмный фон и Escape
 
 
 /*Функционал Создания карточки по нажатию*/

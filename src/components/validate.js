@@ -1,7 +1,7 @@
 /*Функция валидурющая формы любых размерностей*/
-export function enableValidation(form, InputFields = []){
+export function enableValidation(form, inputFields = []){
     const Valids = []     //Здесь все значения валидности полей
-    InputFields.forEach((inp) => {Valids.push(inp.validity.valid)})    //Узнаём и добвляем в Valids нынешнее состояние полей(валидны, нет ли)
+    inputFields.forEach((inp) => {Valids.push(inp.validity.valid)})    //Узнаём и добвляем в Valids нынешнее состояние полей(валидны, нет ли)
     const SubmitButton = form.querySelector(".form__button-submit");    
     //Функция активрующая или деактивирующая функцию валидации
     function SubmitButtonValid(){
@@ -15,7 +15,7 @@ export function enableValidation(form, InputFields = []){
         };
     }
     //Добавляем каждому полю слушатель проверяющией его на валидность
-    InputFields.forEach((inputPlace, index) => {                        
+    inputFields.forEach((inputPlace, index) => {                        
         inputPlace.addEventListener('input', (event)=>{
             Valids[index] = event.target.validity.valid;  //Записваем валидно ли поле сейчас
             if(Valids[index]){ 

@@ -14,13 +14,13 @@ export function closePopupByClickOnBackgroundAndButton(popup){
     popup.querySelector(".popup__container").addEventListener('click', (event) => {event._isClickWithInModal = true});
     popup.addEventListener('click', (event) => {                            
         if (event._isClickWithInModal) return;
-        popup.classList.remove('popup_opened');
+        closePopup(popup);
     });
 
     //Закрытие по клику на Escape
     window.addEventListener('keydown', (event) => {
         if (event.key === "Escape") {
-            popup.classList.remove('popup_opened');
+            closePopup(popup);
         }
     })
 }
