@@ -1,0 +1,15 @@
+.avatar__img{
+    max-height: inherit;
+    max-width: inherit;
+    border-radius: inherit;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    object-fit: contain;
+}
+
+.avatar__img:hover{
+    opacity: 0.25;
+}

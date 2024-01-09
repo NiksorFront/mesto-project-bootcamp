@@ -1,7 +1,7 @@
 .element__like{
     min-width: 22px;
     min-height: 19px;
-    margin: auto;
+    margin: 22px auto 0;
     padding: 0;
 
     background: none;
@@ -10,7 +10,8 @@
     background-image: url("../../../image/like.svg");
     background-repeat: no-repeat;
     object-fit: contain;
-    
+
+    display: block;
     grid-area: like;
     
 }

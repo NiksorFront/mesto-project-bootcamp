@@ -5,6 +5,7 @@
     background: none;
     border: none;
 
+    display: block;
     background-image: url("../../../image/Trash.svg");
 
     position: absolute;

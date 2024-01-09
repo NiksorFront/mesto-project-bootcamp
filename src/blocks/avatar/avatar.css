@@ -5,6 +5,8 @@
     
     margin: 0;
     padding: 0;
+    background: none;
+	border: none;
 
     display: flex;
 }
@@ -13,4 +15,14 @@
     .avatar{
         margin: 0 auto 26px;
     }
+}
+
+
+.avatar:hover{
+    cursor: pointer;
+
+    background-image: url("../../image/Vector.svg");
+    background-repeat: no-repeat;
+    background-size: 25px;
+    background-position: center;
 }

@@ -1,0 +1,17 @@
+.element__number-of-like{
+    max-height: 13px;
+    flex-shrink: 0;
+    margin: auto;
+    margin-bottom: 22px;
+    padding: 0;
+
+    grid-area: like;
+
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}

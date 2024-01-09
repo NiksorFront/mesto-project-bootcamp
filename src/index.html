@@ -14,7 +14,9 @@
     </header>
     <main>
         <section class="profile">
-            <img src="<%=require('./image/niksor.png')%>" class="avatar" alt="Николай Сорокин">
+            <a class="avatar">
+                <img src="<%=require('./image/niksor.png')%>" class="avatar__img" alt="Николай Сорокин">
+            </a>
             <div class="profile__info">
                 <h1 class="profile__name">Николай Сорокин</h1>
                 <p class="profile__subtitle">Исследователь Москвы (2023 год)</p>
@@ -54,6 +56,20 @@
             </div>
         </section>
         
+        <section id="edit-img" class="popup">
+            <div class="popup__container"> 
+                <div class="form">
+                    <h3 class="form__title">Обновить аватар</h3>
+                    <form name="img_url" class="form__form">
+                        <input type="text" id="img_url_avatar" class="form__input" placeholder="URL" minlength="2" maxlength="400" required>
+                        <span class="form__error"></span>
+                        <button type="submit" class="form__button-submit">Сохранить</button>
+                    </form>
+                </div>
+                <button type="button" class="popup__close"></button>
+            </div>
+        </section>
+
         <section id="create-card" class="popup">
             <div class="popup__container"> 
                 <div class="form">
@@ -69,6 +85,16 @@
                 <button type="button" class="popup__close"> </button>
             </div>
         </section>
+        
+        <section id="delete-card" class="popup">
+            <div class="popup__container"> 
+                <div class="form">
+                    <h3 class="form__title">Вы уверены?</h3>
+                    <button type="submit" class="form__button-submit form__button-submit_card-delete">Да</button>
+                </div>
+                <button type="button" class="popup__close"></button>
+            </div>
+        </section>
     </main>
     <footer class="footer">
         <p>© 2023 Mesto Russia</p>
@@ -81,6 +107,7 @@
             <button type="submit" class="element__delete"></button>
             <h2 class="element__title"></h2>
             <button type="submit" class="element__like"></button>
+            <p class="element__number-of-like">0</p>
         </article>
     </template>
 </body>
