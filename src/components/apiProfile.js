@@ -1,5 +1,24 @@
 import {name, job, urlInput} from "./profile"
 
+function OnResponse(res){
+    return res.ok                                               //Если res.ok
+           ? res.json()                                         //Возврщаем Promise 
+           : res.json().then((err) => Promise.reject(err))      //Или ошибку
+}
+
+
+/*Функционал получения Id пользователя с сервера*/
+export async function request(serverLink){
+    const res = await fetch(serverLink, {
+                     headers: { authorization: 'dfad8615-a69b-4969-abcf-da90e50e7e80'}
+                     })
+    
+    return await OnResponse(res)
+}
+
+
+// export const userId = getUserId('https://nomoreparties.co/v1/wbf-cohort-14/users/me')
+
 
 /*Функционал получения имя пользователя с сервера*/
 fetch('https://nomoreparties.co/v1/wbf-cohort-14/users/me', {

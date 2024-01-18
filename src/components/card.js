@@ -10,6 +10,7 @@ export const cards = document.querySelector(".elements"); //Тут хранят�
 //Функция создания каротчки
 const sampleCard  = document.querySelector("#card-template").content.querySelector('.element');
 export function createCard(cardInfo){
+    // console.log(cardInfo);
     const card = sampleCard.cloneNode(true);
     const image = card.querySelector(".element__img");
     const like = card.querySelector(".element__like");
@@ -21,20 +22,20 @@ export function createCard(cardInfo){
     image.src = cardInfo.link;
 
 
-    /*Функционал лайка*/
-    likeNumbers.textContent = cardInfo.likes;             //Записываем сколько уже поставлено
-    if (cardInfo.likeOwner.includes(userId)){             //Проверяем поставлен ли нанешним посителем лайк
-        likeNumbers.textContent -= 1;  //(мини костыль, нужный, чтобы не отображолось лайков больше имеюшихся. Ведь в likeSet мы прибаляем к likeNumbers.textContent этот 1 при отображении)         
-        likeSet(like, likeNumbers)                        //Если да, то отображем это
+    /*Функционал лайка(Код сделал более читабельным, но суть такая же)*/
+    likeNumbers.textContent = cardInfo.likes.length
+    const likeOwner = cardInfo.likes.map((like) => like._id);                       //Id всех пользователей поставивших лайк.
+    //console.log(userId)
+    if (likeOwner.includes(userId)){                                                          //Проверяем поставлен ли нанешним посителем лайк
+        likeNumbers.textContent = likeSet(like, Number(likeNumbers.textContent))              //Если да, то отображем это
     }
-    like.addEventListener('click', () => {                //Ставим слушатель на иконочку сердечка
-        likeSet(like, likeNumbers)                        //чтобы пользователь мог локально поставить свой лайк
-        likeSubmit(like, cardInfo.cardId);                //и отправить инфу на сервер, что он ставлен(или убран)
+    like.addEventListener('click', () => {                                                    //Ставим слушатель на иконочку сердечка
+        likeNumbers.textContent = likeSet(like, Number(likeNumbers.textContent), cardInfo._id)//чтобы отображать и отпралять инфц о новом лайке
     });   
 
 
     /*Функционал удаления карточки*/
-    if(cardInfo.idOwner == userId){
+    if(cardInfo.owner._id === userId){
         //deleteCard(cardInfo)
         trash.addEventListener('click', () => {
             openPopup(deleteCardPopup)
@@ -42,12 +43,12 @@ export function createCard(cardInfo){
             buttonDeleteCard.addEventListener('click', () => deleteCard(card, cardInfo))
         })} //Открываем окошко удаления 
     else{ 
-        trash.style.display = 'none';  //убираем корзинку с глаз долой из вёрстки вон, т.к. она не наша и удалять чужую картинку мы не в праве.
+        trash.remove();  //удаляем корзинку с глаз долой из вёрстки вон, т.к. она не наша и удалять чужую картинку мы не в праве.
     }  
 
 
-    /*Функционал открытия большой картинки*/
-    card.querySelector("#card-image").addEventListener('click', () => {big_img(image, cardInfo.name)})
+    // /*Функционал открытия большой картинки*/
+    // card.querySelector("#card-image").addEventListener('click', () => {big_img(image, cardInfo.name)})
 
     return card
 }
@@ -59,14 +60,23 @@ function deleteCard(crd, crdInf){
     //crd.querySelector(".element__delete").removeEventListener()
 }
 
-function likeSet(like, likeNum){
-    if (like.classList.contains("element__like_set")){
-        like.classList.remove("element__like_set")
-        likeNum.textContent = Number(likeNum.textContent) - 1; 
+//Универсальная функция для установки лайка, как локально так и с отправкой на сервер.
+function likeSet(like, likeNum, CardId = undefined){
+    if (like.classList.contains("element__like_set")){  //Если лайк стоит
+        like.classList.remove("element__like_set")      //Убирает его отобржаение
+        likeNum -= 1;                                   //Уменьшаем общее число на 1
+    }
+    else{                                               //Если не стоит
+        like.classList.add("element__like_set")         //Отображаем, что поставили его
+        likeNum += 1;                                   //Увеличиваем общее число на 1
+    }
+    //Если CardId задан изначально, значит надо отправить инфу на сервер
+    if (CardId !== undefined){
+        likeSubmit(like, CardId);
+        return likeNum
     }
     else{
-        like.classList.add("element__like_set")
-        likeNum.textContent = Number(likeNum.textContent) + 1; 
+        return likeNum-1 //На один меньше, чтобы не отображолось лайков больше имеющихся
     }
 }
 

@@ -2,7 +2,9 @@ import './pages/index.css';
 
 import {createCard, cards} from "./components/card";
 import {openPopup, closePopup, closePopupByClickOnBackgroundAndButton} from "./components/popup";
+import {request} from "./components/apiProfile"
 import "./components/profile"
+import { error } from 'jquery';
 
 /*Функционал добавления карточек с сервера*/
 fetch('https://nomoreparties.co/v1/wbf-cohort-14/cards', {
@@ -15,14 +17,15 @@ fetch('https://nomoreparties.co/v1/wbf-cohort-14/cards', {
         })
         .then((result) => {
             result.forEach((card) => {
+                
                 const objCard = {name: card.name,                               //подпись картинки
                                  link: card.link,                               //ссылка на неё
                                  likes: card.likes.length,                      //количество лайков
                                  likeOwner: card.likes.map((like) => like._id), //Id пользователей, поставивиших лайк
                                  idOwner: card.owner._id,                       //Id создателя карточки
                                  cardId: card._id};                             //Id самой карточки
-
-                cards.insertAdjacentElement("beforeEnd", createCard(objCard))   //Добавляем карточку на сайт
+                //console.log(card);
+                cards.insertAdjacentElement("beforeEnd", createCard(card))   //Добавляем карточку на сайт
             });
         })
         .catch((err) => console.log(err.status))
@@ -30,24 +33,11 @@ fetch('https://nomoreparties.co/v1/wbf-cohort-14/cards', {
 
 
 
-export const userId = "b09410dd327b29c0eab9f06b";
-/*
-Ниже я пробовал написать функцию, которая получается id'шник пользвателя, который только что зашёл на сайт.
-У меня ничего не вышло, т.к. надо ждать пока данные придут, а как сделать задержку через onload я не понял. Точнее почему не получается не понимаю.
-Да и потом authorization всё равно один тот же, поэтому по идее и id будет всегда одинаковым.
+//Получаем id пользователя
+export const userId = await request('https://nomoreparties.co/v1/wbf-cohort-14/users/me')
+                            .then(res => res._id)
+                            .catch(err => console.log("Упс, кажется что-то рипнулось. Оишбка:", err))
 
-//Подгружаем инфу о пользовтеле с сервачка
-function getUserId(saerverLink){
-    const id = fetch(saerverLink, {
-                     headers: { authorization: 'dfad8615-a69b-4969-abcf-da90e50e7e80'}
-                     }).then(res => res.json())
-                       .then((result) => {
-                            return result._id;
-                        })
-    return id.onload
-}
-export const userId = getUserId('https://nomoreparties.co/v1/wbf-cohort-14/users/me')
-*/
 
 /*Функционал открытия окна редактирования*/
 const buttonEdit = document.querySelector(".profile__edit-button");              //кнопочка редактирования профиля
