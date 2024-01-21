@@ -44,7 +44,8 @@ enableValidation({
 //Функция отправки новых данных на сервачок*
 function handleFormSubmit(evt) {
     evt.preventDefault();                                    //Отменяем стандартную отправку формы.
-
+    const submitButton = formSaveNameJob.querySelector(".form__button-submit");  //Находим кнопку отправки
+    submitButton.textContent = "Сохранение...";                                    //Для записи ожидающего текста на период сохранения картинки с сервера
     sending("https://nomoreparties.co/v1/wbf-cohort-14/users/me", //Отправляем новое имя и род дейтельности на сервер
             "PATCH",
             {name: nameInput.value, 
@@ -52,6 +53,7 @@ function handleFormSubmit(evt) {
     .then((res) => {
         name.textContent = res.name;
         job.textContent = res.about
+        submitButton.textContent = "Сохранить";  
         closePopup(profilePopup)                             //Закрываем окно
     })
     .catch(err => console.log(err))
@@ -79,12 +81,14 @@ enableValidation({                                  //Влючаем валид�
 //Функция отправки новой аватарки на сервачок
 function avatarSubmit(evt) {
     evt.preventDefault();                                    //Отменяем стандартную отправку формы.
-
+    const submitButton = formSaveUrlAvatar.querySelector(".form__button-submit");  //Находим кнопку отправки
+    submitButton.textContent = "Сохранение...";                                    //Для записи ожидающего текста на период сохранения картинки с сервера
     sending("https://nomoreparties.co/v1/wbf-cohort-14/users/me/avatar", //Отправляем новое имя и род дейтельности на сервер
             "PATCH",
             {avatar: urlInput.value})
     .then((res) => {
         avatar.src = res.avatar;                             //Устанавливаем серверовскую картинку
+        submitButton.textContent = "Сохранить";
         closePopup(avatarPopup)                              //Закрываем окно
     })
     .catch(err => console.log(err))
@@ -103,6 +107,8 @@ const formCreate = document.forms.form_create;
 
 formCreate.addEventListener('submit', (event) => {
     event.preventDefault();
+    const submitButton = formCreate.querySelector(".form__button-submit");  //Находим кнопку отправки
+    submitButton.textContent = "Сохранение...";                                    //Для записи ожидающего текста на период сохранения картинки с сервера
     //Заливаем на сервачок
     sending('https://nomoreparties.co/v1/wbf-cohort-14/cards',
             "POST",
@@ -111,9 +117,13 @@ formCreate.addEventListener('submit', (event) => {
             })
         .then((resalut)=> {
             cards.prepend(createCard(resalut))      //Добаляем новую карточку в вёрстку
+            submitButton.textContent = "Создать";   //Заменяем загрузочную надпись на прежнюю  
             closePopup(cardPopup);                  //Закрываем окно созадния
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
+
+    placeNameInput.value = "";                      //Очищаем поля, чтобы пользователю
+    linkInput.value = "";                           //Не пришлось стирать всё самому при создании карточки
 });
 
 

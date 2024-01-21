@@ -8,16 +8,13 @@ export function openPopup(popup){
 export function closePopup(popup){
     popup.classList.remove('popup_opened');//Закрываем окно
     document.removeEventListener('keydown', closeByEsc)
+    popup.removeEventListener('click', closeByClick);
 }
 
 //Функция закрытия попапа по нажатия на тёмный фон или escape
 function closePopupByClickOnBackgroundAndButton(popup){
     //Закрытие по клику на тёмный фон
-    popup.querySelector(".popup__container").addEventListener('click', (event) => {event._isClickWithInModal = true});
-    popup.addEventListener('click', (event) => {                            
-        if (event._isClickWithInModal) return;
-        closePopup(popup);
-    });
+    popup.addEventListener('click', closeByClick);
 
     //Закрытие по клику на Escape
     document.addEventListener('keydown', closeByEsc)
@@ -27,5 +24,12 @@ function closeByEsc(evt) {
     if (evt.key === "Escape") {
       const openedPopup = document.querySelector('.popup_opened');
       closePopup(openedPopup);
+    }
+}
+
+function closeByClick(evt){
+    if (evt.target.classList.contains("popup")){
+        const openedPopup = document.querySelector('.popup_opened');
+        closePopup(openedPopup);
     }
 }

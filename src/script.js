@@ -1,33 +1,23 @@
 import './pages/index.css';
 
-import {createCard} from "./components/card";
+import {createCard, deleteCard} from "./components/card";
 import {openPopup, closePopup} from "./components/modal";
 import {request} from "./components/api"
-import {avatar, cards, name, job} from "./components/index"
-import { error } from 'jquery';
+import {avatar, urlInput, cards, name, job} from "./components/index"
 
-
-/*Возможно было бы лучше сделать один request и из него получить все данные, 
-но по идее такой код лучше, т.к. не сломает всё сразу, если что-то не так, раз мы поотдельности получаем каждую инфу*/
-
-//Получение аватарки с сервера
-await request('https://nomoreparties.co/v1/wbf-cohort-14/users/me')
-    .then(res => avatar.src = res.avatar)   //res.avatar - это url;     //Устанавливаем серверовскую картинку
-    .catch(err => console.log("Упс, ошибка:", err))
-
-//получение имени и рода дейтельности пользователя с сервера
-await request('https://nomoreparties.co/v1/wbf-cohort-14/users/me')
-    .then((res) => {
-        name.textContent = res.name;
-        job.textContent = res.about
-    })
-    .catch(err => console.log("Упс, ошибка:", err))
 
 //получение id пользователя с сервера
 export const userId = await request('https://nomoreparties.co/v1/wbf-cohort-14/users/me')
-        .then(res => res._id)
-        .catch(err => console.log("Упс, кажется что-то рипнулось. Ошибка:", err) )
-
+    .then((res) => {
+        //Получение аватарки с сервера
+        avatar.src = res.avatar //res.avatar - это url;     //Устанавливаем серверовскую картинку
+        urlInput.value = avatar.src;                        //Заместо старой, записываем новую ссылку в строку ввода
+        //получение имени и рода дейтельности пользователя с сервера
+        name.textContent = res.name;
+        job.textContent = res.about;
+        return res._id                                      //возвращаем id пользователя с сервера
+    })
+    .catch(err => console.log("Упс, кажется что-то рипнулось. Ошибка:", err))
 
 //card.name - подпись картинки
 //card.link - ссылка на неё
@@ -73,11 +63,11 @@ buttonPopupClose_add.addEventListener('click', () => closePopup(cardPopup));  //
 
 /*Функционал окошка удаления карточки*/
 export const deleteCardPopup = document.querySelector("#delete-card");
-//export const buttonDeleteCard = deleteCardPopup.querySelector(".form__button-submit");
+export const buttonDeleteCard = deleteCardPopup.querySelector(".form__button-submit");
 const buttonPopupClose_delete = deleteCardPopup.querySelector(".popup__close");
 
-buttonPopupClose_delete.addEventListener('click', () => closePopup(deleteCardPopup));      //Закрывем по клику на крестик
-
+buttonPopupClose_delete.addEventListener('click', () => { closePopup(deleteCardPopup) });        //Закрывем по клику на крестик
+buttonDeleteCard.addEventListener('click', deleteCard)                                    
 /*
 Я не хочу удалять мои карточки, потому что они круче нынешних, серверовских.
 Но раз по заданию надо, то пусть хотя бы код будет.

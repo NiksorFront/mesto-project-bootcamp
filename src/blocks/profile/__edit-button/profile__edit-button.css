@@ -10,7 +10,7 @@
     background-size: contain;
 
     display: flex;
-    margin: auto 0 auto 18px;
+    margin: auto 18px;
 }
 
 @media (max-width: 600px){

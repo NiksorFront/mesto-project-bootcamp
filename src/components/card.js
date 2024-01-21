@@ -1,9 +1,9 @@
 import {closePopup, openPopup} from "./modal"
 import {big_img} from "./index"
-import {userId, deleteCardPopup} from "../script"
+import {userId, deleteCardPopup, buttonDeleteCard} from "../script"
 import {submitLikes, deleteCardOnServer} from "./api"
 
-
+const idCardForDelete = [""] //В нулевой индекс ВСЕГДА надо записывать id той карточки, что надо удалить. А уже потом вызвать deleteCard
 //Функция создания каротчки
 const sampleCard  = document.querySelector("#card-template").content.querySelector('.element');
 export function createCard(cardInfo){
@@ -18,6 +18,7 @@ export function createCard(cardInfo){
     image.alt = cardInfo.name;
     image.src = cardInfo.link;
 
+    card.id = cardInfo._id; //Указываем id, чтобы потом было проще искать карточку при удалении
 
     /*Функционал лайка*/
     //Я не стал убирать локальную установку, НО придумал и реализовал интеграцию с сервером и его ответом
@@ -33,12 +34,13 @@ export function createCard(cardInfo){
 
     /*Функционал удаления карточки*/
     if(cardInfo.owner._id === userId){
-        //deleteCard(cardInfo)
         trash.addEventListener('click', () => {
-            openPopup(deleteCardPopup)
-            const buttonDeleteCard = deleteCardPopup.querySelector(".form__button-submit");
-            buttonDeleteCard.addEventListener('click', () => deleteCard(card, cardInfo._id))
-        })} //Открываем окошко удаления 
+            openPopup(deleteCardPopup)  //Открываем окошко удаления
+            //Можно ещё через evt.target.parentElement.id получить Id
+            // buttonDeleteCard.addEventListener('click', () => deleteCard(evt.target.parentElement.id))  //Не использовть, т.к. могут удалиться сразу несколько карточек
+            //Возможно это не самое изящное решение, но через перемнную не вышло, а лучше я ничего не придумал🙂
+            idCardForDelete[0] = card.id //Сохраняем айдшник карточки, чтобы при подтверждении удалить имеено её
+        })}
     else{ 
         trash.remove();  //удаляем корзинку с глаз долой из вёрстки вон, т.к. она не наша и удалять чужую картинку мы не в праве.
     }  
@@ -50,14 +52,20 @@ export function createCard(cardInfo){
     return card
 }
 
-function deleteCard(crd, crdId){
-    deleteCardOnServer(crdId)            //Удаляем карточку с сервера
-    .then((res) => {
-        crd.remove()                     //Удаляем карточку на локалке
-        closePopup(deleteCardPopup)      //Закрывает popup
+export function deleteCard(){
+    buttonDeleteCard.textContent = "Удаление..."                  
+    deleteCardOnServer(idCardForDelete[0])                        //Удаляем карточку с сервера
+    .then(() => {
+        document.getElementById(idCardForDelete[0]).remove()      //Удаляем карточку на локалке
+        buttonDeleteCard.textContent = "Да"
+        closePopup(deleteCardPopup)                               //Закрывает popup
     })
     .catch(res => console.log(res))
 }
+/*
+export function deleteCard(target){
+    console.log(idCardForDelete[0]);
+}*/
 
 //Универсальная локально-серверная функция для установки лайка, как локально так и с отправкой на сервер.
 function likeSet(like, likeNum, CardId = undefined){
