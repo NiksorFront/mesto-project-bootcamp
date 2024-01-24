@@ -4,33 +4,59 @@ setting - это объект, которому нужны следующие к
     inputFields: список полей валидации,
     submitButtonSelector: Селектор кнопки отправки,
     inactiveButtonClass: Селектор для дизактивации кнопки отправки"
-    //inputErrorClass нет, т.к. тип ошибки опрделяется сам внутри enableValidation
-    //errorClass нет, т.к. можно просто присваивать строчке "" и она не будет видна, что и делаю внутри enableValidation
+    inputErrorClass: тип ошибки опрделяется
+    errorClass:
 */
-/*Функция валидурющая формы любых размерностей*/ 
-export function enableValidation(settings){
-    const valids = []     //Здесь все значения валидности полей
-    settings.inputFields.forEach((inp) => {valids.push(inp.validity.valid)})    //Узнаём и добвляем в valids нынешнее состояние полей(валидны, нет ли)
-    const submitButton = settings.form.querySelector(settings.submitButtonSelector);    
-    //Функция активрующая или деактивирующая функцию валидации
-    function submitButtonValid(){
-        if(valids.every(value => value === true)){                      //Если все поля валидны -
-            submitButton.classList.remove(settings.inactiveButtonClass);//Делаем кнопку
-            submitButton.disabled = false;                              //активной
-        }
-        else{                                                           //Если не валидны -
-            submitButton.classList.add(settings.inactiveButtonClass);   //Делаем кнопку 
-            submitButton.disabled = true;                               //не активной
-        };
+
+const showInputError = (formElement, formInput, settings) => {
+    const inputError = formElement.querySelector(`#${formInput.id}-error`);
+    inputError.textContent = formInput.validationMessage;
+  };
+  
+const hideInputError = (formElement, formInput, settings) => {
+    const inputError = formElement.querySelector(`#${formInput.id}-error`);
+    inputError.textContent = '';
+};
+  
+const isValid = (formElement, formInput, settings) => {
+    if (!formInput.validity.valid) {
+      showInputError(formElement, formInput, settings);
+    } else {
+      hideInputError(formElement, formInput, settings);
     }
-    //Добавляем каждому полю слушатель проверяющией его на валидность
-    settings.inputFields.forEach((inputPlace, index) => {                        
-        inputPlace.addEventListener('input', (event)=>{
-            valids[index] = event.target.validity.valid;  //Записваем валидно ли поле сейчас
-            if(valids[index]){ 
-                  inputPlace.nextElementSibling.textContent = "";}
-            else{ inputPlace.nextElementSibling.textContent = event.target.validationMessage;}
-            submitButtonValid();      
-        })
-    })
+};
+  
+const setEventListeners = (formElement, settings) => {
+    const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
+    toggleButtonState(formElement, inputList, settings);
+    inputList.forEach((formInput) => {
+      formInput.addEventListener('input', () => {
+        isValid(formElement, formInput, settings);
+        toggleButtonState(formElement, inputList, settings);
+      });
+    });
+};
+  
+const hasInvalidInput = (inputList) => {
+    return inputList.some((formInput) => {
+      return !formInput.validity.valid;
+    });
+};
+  
+const toggleButtonState = (formElement, inputList, settings) => {
+    const formSubmitButton = formElement.querySelector(settings.submitButtonSelector);
+    if (hasInvalidInput(inputList)) {
+      formSubmitButton.classList.add(settings.inactiveButtonClass);
+      formSubmitButton.disabled = true;
+  
+    } else {
+      formSubmitButton.classList.remove(settings.inactiveButtonClass);
+      formSubmitButton.disabled = false;
+    }
+};
+  
+export function enableValidation(settings) {
+    const forms= Array.from(document.querySelectorAll(settings.formSelector));
+
+    forms.forEach(form => setEventListeners(form, settings));
 }

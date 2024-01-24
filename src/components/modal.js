@@ -1,12 +1,12 @@
 //Функция открытия попапа
 export function openPopup(popup){
     popup.classList.add("popup_opened");
-    closePopupByClickOnBackgroundAndButton(popup); //Закрываем по клику на тёмный фон или Escape
+    closePopupByClickOnBackgroundAndButton(popup); 
 }
 
 //Функция закрытия попапа
 export function closePopup(popup){
-    popup.classList.remove('popup_opened');//Закрываем окно
+    popup.classList.remove('popup_opened');             //Закрываем окно
     document.removeEventListener('keydown', closeByEsc)
     popup.removeEventListener('click', closeByClick);
 }
@@ -29,7 +29,6 @@ function closeByEsc(evt) {
 
 function closeByClick(evt){
     if (evt.target.classList.contains("popup")){
-        const openedPopup = document.querySelector('.popup_opened');
-        closePopup(openedPopup);
+        closePopup(evt.target);
     }
 }
