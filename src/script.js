@@ -55,10 +55,10 @@ buttonEdit.addEventListener('click', () => {                                    
 buttonPopupCloseEdit.addEventListener('click', () => closePopup(profilePopup));  //И закрывем по клику на крестик
 
 
-//Функция отправки новых данных на сервачок*
+//Функция отправки нового имени и рода дейтельности на сервачок*
 function handleFormSubmit(evt) {
     evt.preventDefault();                                         //Отменяем стандартную отправку формы.
-    console.log(evt.submitter)
+    
     const submitButton = evt.submitter;                           //Находим кнопку отправки
     submitButton.textContent = "Сохранение...";                   //Для записи ожидающего текста на период сохранения картинки с сервера
     sending("users/me", //Отправляем новое имя и род дейтельности на сервер
@@ -67,11 +67,11 @@ function handleFormSubmit(evt) {
              about: jobInput.value})
     .then((res) => {
         name.textContent = res.name;
-        job.textContent = res.about
+        job.textContent = res.about;
         closePopup(profilePopup)                                  //Закрываем окно
     })
     .catch(err => console.log(err))
-    .finally(submitButton.textContent = "Сохранить");
+    .finally(() => submitButton.textContent = "Сохранить");
 }
 
 //По нажатию на "Сохранить" отправляем имя и род дейтельности пользователя
@@ -107,7 +107,7 @@ function avatarSubmit(evt) {
         closePopup(avatarPopup)                              //Закрываем окно
     })
     .catch(err => console.log(err))
-    .finally(submitButton.textContent = "Сохранить");
+    .finally(() => submitButton.textContent = "Сохранить");
 }
 
 formSaveUrlAvatar.addEventListener('submit', avatarSubmit);
@@ -128,27 +128,27 @@ const placeNameInput = document.getElementById('name_place');
 const linkInput = document.getElementById('link_photo');
 const formCreate = document.forms.form_create;
 
-formCreate.addEventListener('submit', (event) => {
+function cardSubmit(event){
     event.preventDefault();
-    const submitButton = event.submitter;  //Находим кнопку отправки
-    submitButton.textContent = "Создание...";                             //Для записи ожидающего текста на период сохранения картинки с сервера
+    const submitButton = event.submitter;                       //Находим кнопку отправки
+    submitButton.textContent = "Создание...";                   //Для записи ожидающего текста на период сохранения картинки с сервера
     //Заливаем на сервачок
     sending('cards',
             "POST",
             {name: placeNameInput.value, 
              link: linkInput.value
             })
-        .then((resalut)=> {
-            cards.prepend(createCard(resalut))            //Добаляем новую карточку в вёрстку
-
-            closePopup(cardPopup);                        //Закрываем окно созадния
+    .then((resalut)=> {
+        cards.prepend(createCard(resalut, resalut.owner._id))   //Добаляем новую карточку в вёрстку
+        placeNameInput.value = "";                              //Очищаем поля, чтобы пользователю
+        linkInput.value = "";                                   //Не пришлось стирать всё самому при создании карточки
+        closePopup(cardPopup);                                  //Закрываем окно созадния
         })
-        .catch(err => console.log(err))
-        .finally(submitButton.textContent = "Создать");   //Заменяем загрузочную надпись на прежнюю
+    .catch(err => console.log(err))
+    .finally(() => submitButton.textContent = "Создать");       //Заменяем загрузочную надпись на прежнюю
+}
 
-    placeNameInput.value = "";                      //Очищаем поля, чтобы пользователю
-    linkInput.value = "";                           //Не пришлось стирать всё самому при создании карточки
-});
+formCreate.addEventListener('submit', cardSubmit);
 
 //Включаем валидацию форм
 enableValidation({

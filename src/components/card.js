@@ -73,7 +73,7 @@ function deleteCard(){
         closePopup(deleteCardPopup)                           
     })
     .catch(res => console.log(res)) 
-    .finally(buttonDeleteCard.textContent = "Да");
+    .finally(() => buttonDeleteCard.textContent = "Да");
 }
 
 //Универсальная локально-серверная функция для установки лайка, как локально так и с отправкой на сервер.
@@ -82,24 +82,26 @@ function likeSet(like, likeNum, CardId){
 
     //Ставим лайк локально
     if (like.classList.contains("element__like_set")){              //Если лайк стоит
-        like.classList.remove("element__like_set")                  //Убираем его отобржаение
-        likeNum.textContent = Number(likeNum.textContent) - 1;      //Уменьшаем общее число на 1
+        //like.classList.remove("element__like_set")                  //Убираем его отобржаение
+        //likeNum.textContent = Number(likeNum.textContent) - 1;      //Уменьшаем общее число на 1
         PUTorDEL = "DELETE"
     }
     else{                                                           //Если не стоит
-        like.classList.add("element__like_set")                     //Отображаем, что поставили его
-        likeNum.textContent = Number(likeNum.textContent) + 1;      //Увеличиваем общее число на 1
+        //like.classList.add("element__like_set")                     //Отображаем, что поставили его
+        //likeNum.textContent = Number(likeNum.textContent) + 1;      //Увеличиваем общее число на 1
         PUTorDEL = "PUT"
     }
 
     //Ставим лайк на сервере
     submitLike("cards/likes", PUTorDEL, CardId)
     .then((res) => {                                                //Если всё окей
+        like.classList.toggle("element__like_set")                  //Отображаем, что поставили или убрали его
         likeNum.textContent = res.likes.length;                     //Мы просто подтверждаем это, присвоив полученную длину(по сути она точно такая же как уже стоит)
     })
-    .catch(() => {                                                  //Если нет
-        like.classList.remove("element__like_set")                  //То удаляем поставленый лайк
-        likeNum.textContent = "нет инета";                          //И вместо числа выводим "нет интернета(всё невлезло, поэтому сократил)"
+    .catch((res) => {                                                  //Если нет
+        console.log(res)
+        //like.classList.remove("element__like_set")                  //То удаляем поставленый лайк
+        //likeNum.textContent = "нет инета";                          //И вместо числа выводим "нет интернета(всё невлезло, поэтому сократил)"
     });
 }
 

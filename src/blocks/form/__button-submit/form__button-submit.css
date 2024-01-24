@@ -23,6 +23,7 @@
     .form__button-submit{
         min-width: 238px;
         min-height: 46px;
+        margin-top: 22px;
 
         font-size: 14px;
     }
