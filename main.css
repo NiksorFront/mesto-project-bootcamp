@@ -25,14 +25,14 @@
 .popup__container{display:flex;margin:auto;padding:0;position:relative}
 .popup__close{background:none;background-image:url(8cf87088ae23c7fb507c.svg);background-position:50%;background-size:contain;border:none;display:flex;flex-shrink:0;height:32px;margin:0;position:absolute;right:-40px;top:-40px;width:32px;fill:#fff}@media (max-width:600px){.popup__close{height:20px;right:0;top:-36px;width:20px}}.popup__close:hover{cursor:pointer;opacity:.6}
 .popup_img{background-color:rgba(0,0,0,.9)}
-.form{background:#fff;border-radius:10px;box-shadow:0 0 25px 0 rgba(0,0,0,.15);display:flex;flex-direction:column;flex-shrink:0;flex-wrap:wrap;margin:0;max-width:430px;min-height:180px;padding:0;position:relative;z-index:1}@media (max-width:600px){.form{min-height:322px;min-width:282px}}
+.form{background:#fff;border-radius:10px;box-shadow:0 0 25px 0 rgba(0,0,0,.15);display:flex;flex-direction:column;flex-shrink:0;flex-wrap:wrap;margin:0;max-width:430px;min-height:180px;padding:0;position:relative;z-index:1}@media (max-width:600px){.form{max-width:282px;min-height:322px}}
 .form__title{color:#000;display:flex;font-family:Inter,Verdana,Tahoma,Arial,sans-serif;font-size:24px;font-style:normal;font-weight:900;line-height:normal;margin:34px auto 0 36px;padding:0}@media (max-width:600px){.form__title{font-size:18px;margin:25px 0 0 22px}}
-.form__form{display:flex;flex-direction:column;margin:44px 36px 36px;padding:0}@media (max-width:600px){.form__form{margin:70px 22px 22px}}
+.form__form{display:flex;flex-direction:column;margin:44px 36px 36px;padding:0}@media (max-width:600px){.form__form{margin:22px}}
 .form__input{border:0;color:#000;font-family:Inter,Verdana,Tahoma,Arial,sans-serif;font-size:14px;font-style:normal;font-weight:400;height:27px;line-height:normal;margin:30px 0 0;padding:0;width:auto};.form__input:first-of-type{margin-top:0};.form__input:focus{border-bottom:1px solid rgba(0,0,0,.2)}.form__input:invalid{border-bottom:1px solid rgba(255,0,0,.2)}.form__input:valid{border-bottom:1px solid rgba(0,0,0,.2)}
 .form__error{color:red;font-family:Inter;font-size:12px;font-style:normal;font-weight:400;height:20px;line-height:normal;margin-top:5px}
-.form__button-submit{background:#000;border:0;border-radius:2px;color:#fff;flex-shrink:0;font-family:Inter,Verdana,Tahoma,Arial,sans-serif;font-size:18px;font-style:normal;font-weight:400;line-height:normal;margin:48px 0 0;min-height:50px;min-width:358px;padding:0;text-align:center}@media (max-width:600px){.form__button-submit{font-size:14px;min-height:46px;min-width:238px}}.form__button-submit:hover{cursor:pointer;opacity:.8}
+.form__button-submit{background:#000;border:0;border-radius:2px;color:#fff;flex-shrink:0;font-family:Inter,Verdana,Tahoma,Arial,sans-serif;font-size:18px;font-style:normal;font-weight:400;line-height:normal;margin:48px 0 0;min-height:50px;min-width:358px;padding:0;text-align:center}@media (max-width:600px){.form__button-submit{font-size:14px;margin-top:22px;min-height:46px;min-width:238px}}.form__button-submit:hover{cursor:pointer;opacity:.8}
 .form__button-submit_block{background:none;border:1px solid #000;border-radius:2px;color:#000;opacity:20%}.form__button-submit_block:hover{cursor:none;opacity:20%}
-.form__button-submit_card-delete{margin:36px}
+.form__button-submit_card-delete{margin:36px}@media (max-width:600px){.form__button-submit_card-delete{margin:20px}}
 .form_img{background:none;flex-shrink:0;margin-top:auto;max-height:75vh;max-width:75vw}
 .form__img{display:flex;margin:0;max-height:70vh;max-width:75vw;-o-object-fit:contain;object-fit:contain;padding:0}
 .form_img__title{color:#fff;display:flex;font-family:Inter;font-size:12px;font-style:normal;font-weight:400;line-height:normal;margin:10px 0 0;padding:0}
