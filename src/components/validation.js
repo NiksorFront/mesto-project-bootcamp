@@ -28,40 +28,37 @@ const isValid = (formElement, formInput, settings) => {
   
 const setEventListeners = (formElement, settings) => {
     const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
-    toggleButtonState(formElement, inputList, settings);
+    const formSubmitButton = formElement.querySelector(settings.submitButtonSelector);
+    toggleButtonState(formElement, formSubmitButton, settings);
     inputList.forEach((formInput) => {
       formInput.addEventListener('input', () => {
         isValid(formElement, formInput, settings);
-        toggleButtonState(formElement, inputList, settings);
+        toggleButtonState(formElement, formSubmitButton, settings);
       });
     });
 
-    formElement.addEventListener("submit", () => {
-      const formSubmitButton = formElement.querySelector(settings.submitButtonSelector);
-      formSubmitButton.classList.add(settings.inactiveButtonClass);
-      formSubmitButton.disabled = true;
-    });
+    /*formElement.addEventListener("submit", () => {
+      disabledButton(formSubmitButton, settings)
+    });*/
 };
-  
-const hasInvalidInput = (inputList) => {
-    return inputList.some((formInput) => {
-      return !formInput.validity.valid;
-    });
-};
-  
-const toggleButtonState = (formElement, inputList, settings) => {
-    const formSubmitButton = formElement.querySelector(settings.submitButtonSelector);
-    if (hasInvalidInput(inputList)) {
-      formSubmitButton.classList.add(settings.inactiveButtonClass);
-      formSubmitButton.disabled = true;
-  
-    } else {
-      formSubmitButton.classList.remove(settings.inactiveButtonClass);
-      formSubmitButton.disabled = false;
-    }
+
+export function disabledSubmitButton(formSubmitButton, settings){
+  formSubmitButton.classList.add(settings.inactiveButtonClass);
+  formSubmitButton.disabled = true;
+}
+
+export function enableSubmitButton(formSubmitButton, settings){
+  formSubmitButton.classList.remove(settings.inactiveButtonClass);
+  formSubmitButton.disabled = false;
+}
+
+const toggleButtonState = (formElement, formSubmitButton, settings) => {
+    !formElement.checkValidity() 
+    ? disabledSubmitButton(formSubmitButton, settings)
+    : enableSubmitButton(formSubmitButton, settings);
 };
   
 export function enableValidation(settings) {
-    const forms= Array.from(document.querySelectorAll(settings.formSelector));
+    const forms= document.querySelectorAll(settings.formSelector);
     forms.forEach(form => setEventListeners(form, settings));
 }

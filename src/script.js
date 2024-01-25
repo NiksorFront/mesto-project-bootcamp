@@ -3,36 +3,30 @@ import './pages/index.css';
 import {createCard} from"./components/card";
 import {openPopup, closePopup} from "./components/modal";
 import {request, sending} from "./components/api"
-import {enableValidation} from "./components/validation"
+import {enableValidation, disabledSubmitButton, enableSubmitButton} from "./components/validation"
 // import {cardPopup, profilePopup, avatarPopup} from "../script"
 
 
 const cards = document.querySelector(".elements");      //Тут храняться все карточки
+const settingsValidation = {
+                                formSelector: ".form__form",
+                                inputSelector: ".form__input",
+                                submitButtonSelector: ".form__button-submit",
+                                inactiveButtonClass: "form__button-submit_block",
+                                inputErrorClass: "form__error",
+                           }
 
-
-const getUserData = request('users/me')
-                    .then(res => res)
-                    .catch(err => reject(err));
-
-const getCardsServer = request('cards')
-                       .then(res => res)
-                       .catch(err => reject(err));
-
-
-Promise.all([getUserData, getCardsServer])
-.then((values) => {
-    const user = values[0]
-    const serverCards = values[1]
-
+Promise.all([request('users/me'), request('cards')])
+.then(([user, serverCards]) => {
     //Получение аватарки с сервера
-    avatar.src = user.avatar                             //user.avatar - это url;    
-    urlInput.value = avatar.src;                         //Заместо старой, записываем новую ссылку в строку ввода
+    avatar.src = user.avatar                             //user.avatar - это url;
     name.textContent = user.name;                        //Получение имени
     job.textContent = user.about;                        //и рода дейтельности
 
     //Добавления карточек на сайт
     serverCards.forEach(card => cards.append(createCard(card, user._id)));
 })
+.catch(err => reject(err));
 
 /*Функционал окна редактирования имени и рода дейтельности*/
 const name = document.querySelector(".profile__name");              
@@ -56,11 +50,12 @@ buttonPopupCloseEdit.addEventListener('click', () => closePopup(profilePopup)); 
 
 
 //Функция отправки нового имени и рода дейтельности на сервачок*
-function handleFormSubmit(evt) {
+function nameAndJobFormSubmit(evt) {
     evt.preventDefault();                                         //Отменяем стандартную отправку формы.
     
     const submitButton = evt.submitter;                           //Находим кнопку отправки
     submitButton.textContent = "Сохранение...";                   //Для записи ожидающего текста на период сохранения картинки с сервера
+    disabledSubmitButton(submitButton, settingsValidation)
     sending("users/me", //Отправляем новое имя и род дейтельности на сервер
             "PATCH",
             {name: nameInput.value, 
@@ -71,11 +66,14 @@ function handleFormSubmit(evt) {
         closePopup(profilePopup)                                  //Закрываем окно
     })
     .catch(err => console.log(err))
-    .finally(() => submitButton.textContent = "Сохранить");
+    .finally(() => {
+        submitButton.textContent = "Сохранить"
+        enableSubmitButton(submitButton, settingsValidation)
+    });
 }
 
 //По нажатию на "Сохранить" отправляем имя и род дейтельности пользователя
-formSaveNameJob.addEventListener('submit', handleFormSubmit); 
+formSaveNameJob.addEventListener('submit', nameAndJobFormSubmit); 
 
 
 
@@ -90,7 +88,6 @@ buttonPopupCloseAvatar.addEventListener("click", () => closePopup(avatarPopup));
 /*Функционал онка редактирования аватарки*/
 const avatar = document.querySelector(".avatar__img");
 const urlInput = document.getElementById("img_url_avatar");
-urlInput.value = avatar.src                         //Записываем в строку ввода ссылку
 
 const formSaveUrlAvatar = document.forms.img_url;   //Кнопка сохранения ссылки
 
@@ -99,6 +96,7 @@ function avatarSubmit(evt) {
     evt.preventDefault();                                    //Отменяем стандартную отправку формы.
     const submitButton = evt.submitter;                      //Находим кнопку отправки
     submitButton.textContent = "Сохранение...";              //Для записи ожидающего текста на период сохранения картинки с сервера
+    disabledSubmitButton(submitButton, settingsValidation);
     sending("users/me/avatar", //Отправляем новое имя и род дейтельности на сервер
             "PATCH",
             {avatar: urlInput.value})
@@ -107,7 +105,10 @@ function avatarSubmit(evt) {
         closePopup(avatarPopup)                              //Закрываем окно
     })
     .catch(err => console.log(err))
-    .finally(() => submitButton.textContent = "Сохранить");
+    .finally(() => {
+        submitButton.textContent = "Сохранить";
+        enableSubmitButton(submitButton, settingsValidation);
+    });
 }
 
 formSaveUrlAvatar.addEventListener('submit', avatarSubmit);
@@ -132,6 +133,7 @@ function cardSubmit(event){
     event.preventDefault();
     const submitButton = event.submitter;                       //Находим кнопку отправки
     submitButton.textContent = "Создание...";                   //Для записи ожидающего текста на период сохранения картинки с сервера
+    disabledSubmitButton(submitButton, settingsValidation);
     //Заливаем на сервачок
     sending('cards',
             "POST",
@@ -145,17 +147,12 @@ function cardSubmit(event){
         closePopup(cardPopup);                                  //Закрываем окно созадния
         })
     .catch(err => console.log(err))
-    .finally(() => submitButton.textContent = "Создать");       //Заменяем загрузочную надпись на прежнюю
+    .finally(() => {
+        submitButton.textContent = "Создать";
+    });
 }
 
 formCreate.addEventListener('submit', cardSubmit);
 
 //Включаем валидацию форм
-enableValidation({
-    formSelector: ".form__form",
-    inputSelector: ".form__input",
-    submitButtonSelector: ".form__button-submit",
-    inactiveButtonClass: "form__button-submit_block",
-    inputErrorClass: "form__error",
-    errorClass: "",
-});
+enableValidation(settingsValidation);

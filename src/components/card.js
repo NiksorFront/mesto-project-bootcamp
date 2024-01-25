@@ -108,7 +108,7 @@ function likeSet(like, likeNum, CardId){
 
 //Функция открытия картинки на весь экран
 function big_img(image){
-    const cardText = image.parentNode.parentNode.querySelector(".element__title").textContent //Можно ещё через alt получать текст, но лучше так
+    const cardText = image.closest('.element').querySelector(".element__title").textContent //Можно ещё через alt получать текст, но лучше так
 
     img.src = image.getAttribute('src');
     img.alt = cardText;
